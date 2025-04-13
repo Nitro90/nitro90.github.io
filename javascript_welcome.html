@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Tom D</title>
+</head>
+
+<body>
+    <header>
+        <a href="/">Tom D</a>
+        <span id="divider">|</span>
+        <nav>
+            <a href="/">About</a>
+            <a href="/classes.html">Classes</a>
+            <a href="/javascript_welcome.html">JS Welcome</a>
+        </nav>
+    </header>
+    <main>
+        <h1>JavaScript Welcome page</h1>
+        <section id="weatherwelcome">
+            <div>
+                <input id="nameInput" placeholder="name"><button id="nameInputBtn">submit</button>
+            </div>
+            <br>
+            <div id="welcomeScreen">
+                <span id="name_date_weather"></span><br>
+                <span id="last_visit"></span>
+            </div>
+        </section>
+    </main>
+
+    <script>
+
+        function getWeatherDesc(code) {
+            switch (code) {
+                case 0:
+                    return "Clear sky";
+                case 1:
+                case 2:
+                case 3:
+                    return "Partly cloudy";
+                case 45:
+                case 48:
+                    return "Fog";
+                case 51:
+                case 53:
+                case 55:
+                    return "Drizzle";
+                case 56:
+                case 57:
+                    return "Freezing Drizzle";
+                case 61:
+                case 63:
+                case 65:
+                    return "Rain";
+                case 66:
+                case 67:
+                    return "Freezing Rain";
+                case 71:
+                case 73:
+                case 75:
+                    return "Snow fall";
+                case 77:
+                    return "Snow grains";
+                case 80:
+                case 81:
+                case 82:
+                    return "Rain showers";
+                case 85:
+                case 86:
+                    return "Snow showers";
+                case 95:
+                case 96:
+                case 99:
+                    return "Thunderstorm";
+                default:
+                    return "Unknown weather code";
+            }
+        }
+
+        function greeting() {
+            let now = new Date();
+            let hours = now.getHours();
+
+            if (hours >= 5 && hours < 12) {
+                return "Good morning";
+            } else if (hours >= 12 && hours < 18) {
+                return "Good afternoon";
+            } else {
+                return "Good night";
+            }
+        }
+
+        async function render() {
+            // Variables
+            let username = localStorage.getItem("name")
+            let last_visit = localStorage.getItem("lastVisit")
+
+            let currentDate = new Date(Date.now());
+
+            let options = {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+                timeZone: "America/New_York",
+            };
+
+            let time = currentDate.toLocaleTimeString("en-US", options);
+
+            let date = currentDate.toLocaleDateString("en-US");
+
+            let timeDate = time + " EST on " + date;
+
+            // If no username is set, exit current function.
+            if (username == "" || username == null) {
+                return
+            }
+
+            // If the weather isnt set.
+            if (!window.weather) {
+                respon = await fetch("https://api.open-meteo.com/v1/forecast?latitude=42.3314&longitude=-83.0457&current=weather_code&timezone=America%2FNew_York&temperature_unit=fahrenheit&current_weather=true")
+                respon = await respon.json();
+                window.weather = getWeatherDesc(respon.current_weather.weathercode)
+
+                // Since weather only runs once per page reload, we can also include the last visited.
+                if (last_visit != "" && last_visit != null) {
+                    document.getElementById("last_visit").innerText = "Btw, you last visited on " + last_visit + "."
+                }
+            }
+
+            // Appending informtion to the DOM.
+            document.getElementById("name_date_weather").innerText = greeting() + " " + username + "! It's " + timeDate + ", and it's " + window.weather + " right now."
+            localStorage.setItem("lastVisit", timeDate.split("on").join("in"))
+
+            // Update time every second.
+            setInterval(render, 1000)
+        }
+
+        // Attempt to render.
+        render();
+
+        // On click for username submission
+        document.getElementById("nameInputBtn").onclick = () => {
+            if (document.getElementById("nameInput").value != "") {
+                localStorage.setItem("name", document.getElementById("nameInput").value)
+                render()
+            }
+        }
+
+    </script>
+</body>
+
+</html>

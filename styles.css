@@ -1,0 +1,135 @@
+/* Font Import: */
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap");
+
+body {
+  background: #191724;
+  color: #e0def4;
+  font-size: 1.75rem;
+  width: 70%;
+  margin: 1rem auto;
+
+  font-family: "Source Sans 3", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+header {
+  display: flex;
+  justify-self: center;
+
+  padding-left: 3rem;
+  padding-right: 3rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-radius: 20px;
+  background: #26233a
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+}
+
+span {
+  color: #e0def4;
+}
+
+#divider {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+a {
+  width: fit-content;
+  height: fit-content;
+  position: relative;
+  color: #e0def4;
+  transition: color 0.25s;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #c4a7e7;
+}
+
+a::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #c4a7e7;
+  transition: transform 0.25s ease-out;
+}
+
+a:hover::after {
+  transform: scaleX(1);
+  background-color: #c4a7e7;
+}
+
+a:hover::after {
+  transform-origin: bottom left;
+}
+
+a::after {
+  transform-origin: bottom right;
+}
+
+a:focus {
+  outline: 2px solid #c4a7e7;
+}
+
+.contrastLink {
+  color: #524f67;
+}
+
+header {
+  font-size: 1.25rem;
+}
+
+td {
+  text-align: center;
+}
+
+.coverImg {
+  width: 80%;
+}
+
+#FirstTb,
+#SecondTb {
+  border-right: 2px solid #e0def4;
+  width: 33%;
+  padding: 0.75rem
+}
+
+#ThirdTb {
+  width: 33%;
+  padding: 0.75rem
+}
+
+
+/* Turn table into grid if screen size is smaller than 1000px width */
+@media (max-width: 1000px) {
+  #tableView {
+    display: grid;
+  }
+
+  #FirstTb,
+  #SecondTb {
+    border: 0;
+    border-bottom: 2px solid #e0def4;
+  }
+
+  #FirstTb,
+  #SecondTb,
+  #ThirdTb {
+    width: 100%;
+  }
+
+  .coverImg {
+    width: 50%;
+  }
+}
